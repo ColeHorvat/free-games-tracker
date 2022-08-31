@@ -6,12 +6,17 @@ SignUp:
 */
 
 const dotenv = require('dotenv');
+const fetch = require('node-fetch')
 
 dotenv.config()
 
 const TEST_EMAIL = process.env.TEST_EMAIL
 const TEST_PHONE = process.env.TEST_PHONE
-const ADD_RECIPIENT_ENDPOINT = process.env.ADD_RECIPIENT_ENDPOINT
+const ADD_RECIPIENT_ENDPOINT = process.env.CREATE_RECIPIENT_ENDPOINT
+const ADD_TO_LIST_ENDPOINT = process.env.ADD_TO_LIST_ENDPOINT
+const AUTH_KEY = process.env.AUTH_KEY
+
+const GAME_NOTIFICATION = process.env.GAME_NOTIFICATION
 
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
@@ -47,37 +52,88 @@ module.exports = async function (context, req) {
     let digit = Math.floor(1000 + Math.random() * 9000);
 
     //Create ID
-    const USER_ID = "FGT-" + dateString + timeString + digit 
+    const USER_ID = "FGT-" + dateString + timeString + digit
 
     //Create Courier recipient
-    const AUTH_KEY = process.env.AUTH_KEY
+    try {
+        createRecipient(USER_ID);
+    } catch (e) {
+        console.error("Couldn't create Courier recipient'");
+    }
 
-    const profileOptions = {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + AUTH_KEY
-        },
-        body: JSON.stringify({
-            "profile": {
-                "email": EMAIL,
-                "phone_number": PHONE
-            }
-        })
-    };
-
-    fetch(ADD_RECIPIENT_ENDPOINT + USER_ID, profileOptions)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
-
-    
     //Add New Recipient to List
-
+    try {
+        addToList(USER_ID)
+    } catch (e) {
+        console.error("Couldn't add recipient to list")
+    }
 
     context.res = {
         // status: 200, /* Defaults to 200 */
         body: ""
     };
+
+/**
+ * It takes a user ID and creates a recipient profile for that user.
+ * @param USER_ID - The unique user ID is the unique recipient ID that is added to Courier
+ */
+    function createRecipient(USER_ID) {
+        const profileOptions = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + AUTH_KEY
+            },
+            body: JSON.stringify({
+                "profile": {
+                    "email": EMAIL,
+                    "phone_number": PHONE
+                }
+            })
+        };
+
+        fetch(ADD_RECIPIENT_ENDPOINT + USER_ID, profileOptions)
+            .then(response => response.json())
+            .then(response => bodyRes = response)
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+    }
+
+/**
+ * It takes a user ID as a parameter, and then adds that recipient to a list in Courier.
+ * @param USER_ID - The unique ID of the recipient you want to add to the list.
+ */
+    function addToList(USER_ID) {
+        const listOptions = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + AUTH_KEY
+            },
+            body: JSON.stringify({
+                "preferences": {
+                    "notifications": {
+                        "SET3Q2V4WNMNPNG9C5FQ2P7GT3K8": {
+                            "status": "OPTED_IN"
+                        }
+                    },
+                    "categories": {
+                        "Email": {
+                            "status": "OPTED_IN"
+                        }
+                    }
+                }
+            })
+        };
+
+        let bodyRes = ""
+
+        fetch(ADD_TO_LIST_ENDPOINT + USER_ID, listOptions)
+            .then(response => response.json())
+            .then(response => bodyRes = response)
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+    }
 }
