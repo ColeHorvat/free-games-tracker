@@ -6,6 +6,8 @@ A web application where users can view the current free offers from Steam and Ep
 
 ## System Diagram
 
+Addition: Need to create a new HTTP trigger Azure Function for pulling data from Epic Gamees Store and Steam. The timer function will only handle sending out notifications if there's a new free game.
+
 ![Azure and Database drawio](https://user-images.githubusercontent.com/56736430/187585453-5e672300-7348-4f07-8864-0ccdab1007e5.png)
 
 # Getting Started with Create React App
