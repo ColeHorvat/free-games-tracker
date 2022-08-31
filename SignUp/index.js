@@ -9,14 +9,18 @@ const dotenv = require('dotenv');
 
 dotenv.config()
 
+const TEST_EMAIL = process.env.TEST_EMAIL
+const TEST_PHONE = process.env.TEST_PHONE
+const ADD_RECIPIENT_ENDPOINT = process.env.ADD_RECIPIENT_ENDPOINT
+
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
     //Initialize data from form
 
     const FIRST_NAME = "Cole" //req.headers or req.body[path]
-    const EMAIL = process.env.TEST_EMAIL //req.headers or req.body[path]
-    const PHONE = process.env.TEST_PHONE //req.headers or req.body[path]
+    const EMAIL = TEST_EMAIL //req.headers or req.body[path]
+    const PHONE = TEST_PHONE //req.headers or req.body[path]
     const CONTACT_PREF = ["Email"] //req.body[path]
 
     //Create unique recipient ID
@@ -63,10 +67,14 @@ module.exports = async function (context, req) {
         })
     };
 
-    fetch('https://api.courier.com/profiles/0460766e-8463-4905-ae98-b72c7aef41d6', options)
+    fetch(ADD_RECIPIENT_ENDPOINT + USER_ID, profileOptions)
         .then(response => response.json())
         .then(response => console.log(response))
         .catch(err => console.error(err));
+
+    
+    //Add New Recipient to List
+
 
     context.res = {
         // status: 200, /* Defaults to 200 */
