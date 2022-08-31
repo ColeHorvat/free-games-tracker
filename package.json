@@ -6,6 +6,7 @@
     "start": "func start",
     "test": "echo \"No tests yet...\""
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "dotenv": "^16.0.2"
+  }
 }
