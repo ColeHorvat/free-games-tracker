@@ -1,3 +1,13 @@
+# Free Games Tracker
+
+## Description
+
+A web application where users can view the current free offers from Steam and Epic Games Store on the dashboard, or sign up to receive notifications through email and/or SMS using Courier and Twilio.
+
+## System Diagram
+
+![Azure and Database drawio](https://user-images.githubusercontent.com/56736430/187585453-5e672300-7348-4f07-8864-0ccdab1007e5.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
