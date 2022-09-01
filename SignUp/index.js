@@ -16,8 +16,6 @@ const ADD_RECIPIENT_ENDPOINT = process.env.CREATE_RECIPIENT_ENDPOINT
 const ADD_TO_LIST_ENDPOINT = process.env.ADD_TO_LIST_ENDPOINT
 const AUTH_KEY = process.env.AUTH_KEY
 
-const GAME_NOTIFICATION = process.env.GAME_NOTIFICATION
-
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
