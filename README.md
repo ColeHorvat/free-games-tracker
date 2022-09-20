@@ -6,7 +6,7 @@ A web application where users can view the current free offers from Steam and Ep
 
 ## System Diagram
 
-![Azure and Database drawio](https://user-images.githubusercontent.com/56736430/187585453-5e672300-7348-4f07-8864-0ccdab1007e5.png)
+![1662247138981](https://user-images.githubusercontent.com/56736430/191178987-7dd09597-1b8a-4c6e-93cc-72078f1dec31.jpg)
 
 # Getting Started with Create React App
 
