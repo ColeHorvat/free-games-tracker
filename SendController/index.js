@@ -15,7 +15,7 @@ module.exports = async function (context, myTimer) {
     let content = compareResult(oldResult, newResult)
 
     if(content[0] || content[1]) {
-        // SEND TO LIST
+        // SEND TO LIST AND ADD NEW RES TO DATABASE
     }
 
     if (myTimer.isPastDue) {
