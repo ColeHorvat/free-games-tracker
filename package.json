@@ -7,6 +7,7 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
+    "@trycourier/courier": "^3.15.0",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.2",
     "epic-free-games": "^3.1.1",
