@@ -4,7 +4,7 @@ const fetch = require("node-fetch")
 const { BlobServiceClient } = require('@azure/storage-blob')
 
 const AUTH_KEY = process.env.AUTH_KEY
-const GET_STORE_DATA_URL = process.env.GET_STORE_DATA_URL_TEST
+const GET_STORE_DATA_URL = process.env.GET_STORE_DATA_URL
 const SAVED_DATA_URL = process.env.SAVED_DATA_URL
 const CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING
 
@@ -20,9 +20,8 @@ module.exports = async function (context, myTimer) {
 	let newResult =	await getRequest(GET_STORE_DATA_URL) //Make request to GET_STORE_DATA_URL
 
 	let content = await compareResult(oldResult, newResult)
-	console.log(content)
+	
 	if (await content[0] || await content[1]) {
-		// SEND TO LIST AND ADD NEW RES TO DATABASE
 		const { requestId } = await courier.send({
 			message: {
 				to: {
@@ -50,8 +49,14 @@ module.exports = async function (context, myTimer) {
 	context.log('JavaScript timer trigger function ran!', timeStamp);
 };
 
+/**
+ * It compares the old result with the new result and returns the new result with the old result
+ * removed.
+ * @param oldRes - the old result
+ * @param newRes - the new result
+ * @returns An array of arrays.
+ */
 async function compareResult(oldRes, newRes) {
-	/* console.log(oldRes) */
 	let result = []
 	for (let s = 0; s < newRes.length; s++) {
 		for (let g = 0; g < newRes[s].length; g++) {
@@ -66,6 +71,11 @@ async function compareResult(oldRes, newRes) {
 	return result
 }
 
+/**
+ * It takes a URL as an argument, makes a GET request to that URL, and returns the response.
+ * @param url - The URL to send the request to.
+ * @returns A promise.
+ */
 async function getRequest(url) {
 	let res = await fetch(url, {
 		method: "GET",
@@ -74,11 +84,20 @@ async function getRequest(url) {
 	return await res
 }
 
+/**
+ * It returns a promise that resolves to the JSON response of a GET request to the URL stored in the
+ * constant SAVED_DATA_URL.
+ * @returns The response from the server.
+ */
 async function getStoredData() {
 	let res = await getRequest(SAVED_DATA_URL)
 	return res.json()
 }
 
+/**
+ * It takes a string of data, uploads it to a blob container in Azure Storage, and returns a promise.
+ * @param data - The data to upload.
+ */
 async function uploadFile(data) {
 	const blobServiceClient = BlobServiceClient.fromConnectionString(CONNECTION_STRING)
 	const containerName = "store-data"
