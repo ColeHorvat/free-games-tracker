@@ -17,7 +17,7 @@ module.exports = async function (context, myTimer) {
 	var timeStamp = new Date().toISOString();
 
 	let oldResult = await getStoredData()//Retrieve from database
-	let newResult =	await getRequest(GET_STORE_DATA_URL) //Make request to GET_STORE_DATA_URL
+	let newResult =	await getStorefrontData() //Make request to GET_STORE_DATA_URL
 
 	let content = await compareResult(oldResult, newResult)
 	
@@ -91,6 +91,16 @@ async function getRequest(url) {
  */
 async function getStoredData() {
 	let res = await getRequest(SAVED_DATA_URL)
+	return res.json()
+}
+
+/**
+ * This function makes a GET request to the URL specified in the GET_STORE_DATA_URL constant, and
+ * returns the response as a JSON object.
+ * @returns A promise that resolves to the JSON response.
+ */
+async function getStorefrontData() {
+	let res = await getRequest(GET_STORE_DATA_URL)
 	return res.json()
 }
 
