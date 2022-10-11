@@ -21,7 +21,7 @@ module.exports = async function (context, myTimer) {
 
 	let content = await compareResult(oldResult, newResult)
 	
-	if (await content[0] || await content[1]) {
+	if (await content[0].length != 0 || await content[1].length != 0) {
 		const { requestId } = await courier.send({
 			message: {
 				to: {
