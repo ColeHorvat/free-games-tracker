@@ -1,4 +1,3 @@
-/* import { CourierClient } from "@trycourier/courier"; */
 const { CourierClient } = require("@trycourier/courier")
 const fetch = require("node-fetch")
 const { BlobServiceClient } = require('@azure/storage-blob')
